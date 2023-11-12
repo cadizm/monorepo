@@ -5,5 +5,7 @@ package(default_visibility = ["//visibility:public"])
 java_library(
     name = "algorithms",
     srcs = ["DepthFirstSearch.java"],
-    deps = [],
+    deps = [
+        "@maven//:javax_validation_validation_api_2_0_1_Final",
+    ],
 )

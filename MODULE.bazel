@@ -1,0 +1,13 @@
+# https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md
+bazel_dep(name = 'rules_jvm_external', version = '5.3')
+
+maven = use_extension('@rules_jvm_external//:extensions.bzl', 'maven')
+
+maven.install(
+    artifacts = [
+        'javax.validation:validation-api:2.0.1.Final',
+    ],
+    lock_file = '//:maven_install.json',
+)
+
+use_repo(maven, 'maven', 'unpinned_maven')
