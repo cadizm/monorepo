@@ -1,0 +1,2 @@
+common --enable_bzlmod
+build --java_language_version=17
