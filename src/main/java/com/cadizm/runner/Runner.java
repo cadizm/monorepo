@@ -7,7 +7,7 @@ import com.cadizm.graph.Node;
 
 public class Runner {
 
-  public static void stringsRearrangement() {
+  public static void dfs() {
     var aba = new Node<>("aba");
     var bbb = new Node<>("bbb");
     var bab = new Node<>("bab");
@@ -16,14 +16,16 @@ public class Runner {
     bbb.setNeighbors(List.of(aba, bab));
     bab.setNeighbors(List.of(aba, bbb));
 
-    System.out.printf("Performing iterative DFS rooted iterative %s\n", aba);
+    var nodes = List.of(aba, bbb, bab);
 
-    DepthFirstSearch.iterativeDfs(aba, node -> {
-      System.out.printf("Visiting %s\n", node);
-    });
+    for (var node : nodes) {
+      System.out.printf("Performing DFS rooted at %s\n", node);
+      DepthFirstSearch.iterativeDfs(node, System.out::println);
+    }
   }
 
   public static void main(String args[]) {
-    stringsRearrangement();
+    dfs();
+    System.out.println("\nDone");
   }
 }

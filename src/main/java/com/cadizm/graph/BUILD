@@ -5,5 +5,7 @@ package(default_visibility = ["//visibility:public"])
 java_library(
     name = "graph",
     srcs = glob(["*.java"]),
-    deps = [],
+    deps = [
+        "//third_party:google_guava",
+    ],
 )

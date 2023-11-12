@@ -25,6 +25,8 @@ JUNIT_PLATFORM_VERSION = "1.10.1"
 
 maven_install(
     artifacts = [
+        "com.google.guava:guava:32.1.3-jre",
+        "org.hamcrest:hamcrest:2.2",
         "org.junit.platform:junit-platform-launcher:%s" % JUNIT_PLATFORM_VERSION,
         "org.junit.platform:junit-platform-reporting:%s" % JUNIT_PLATFORM_VERSION,
         "org.junit.jupiter:junit-jupiter-api:%s" % JUNIT_JUPITER_VERSION,
@@ -38,7 +40,6 @@ maven_install(
 )
 
 CONTRIB_RULES_JVM_VERSION = "0.9.0"
-
 CONTRIB_RULES_JVM_SHA = "548f0583192ff79c317789b03b882a7be9b1325eb5d3da5d7fdcc4b7ca69d543"
 
 http_archive(

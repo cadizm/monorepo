@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node<T> {
-  private final T data;
+  private final String label;
   private List<Node<T>> neighbors;
 
-  public Node(T data) {
-    this(data, new ArrayList<>());
+  public Node(String label) {
+    this(label, new ArrayList<>());
   }
 
-  public Node(T data, List<Node<T>> neighbors) {
-    this.data = data;
+  public Node(String label, List<Node<T>> neighbors) {
+    this.label = label;
     this.neighbors = neighbors;
   }
 
-  public T getData() {
-    return data;
+  public String getLabel() {
+    return label;
   }
 
   public List<Node<T>> getNeighbors() {
@@ -29,6 +29,6 @@ public class Node<T> {
   }
 
   public String toString() {
-    return String.format("(%s)", data);
+    return label;
   }
 }
