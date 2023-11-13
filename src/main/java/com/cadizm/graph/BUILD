@@ -3,7 +3,9 @@ load("@rules_java//java:defs.bzl", "java_binary")
 package(default_visibility = ["//visibility:public"])
 
 java_library(
-    name = "algorithms",
-    srcs = ["DepthFirstSearch.java"],
-    deps = [],
+    name = "graph",
+    srcs = glob(["*.java"]),
+    deps = [
+        "//third_party:google_guava",
+    ],
 )

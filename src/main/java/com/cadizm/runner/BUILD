@@ -4,5 +4,5 @@ java_binary(
     name = "runner",
     srcs = ["Runner.java"],
     main_class = "com.cadizm.runner.Runner",
-    deps = ["//src/main/java/com/cadizm/algorithms"],
+    deps = ["//src/main/java/com/cadizm/graph"],
 )
