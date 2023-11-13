@@ -1,11 +1,8 @@
-load("@rules_java//java:defs.bzl", "java_binary")
-
-package(default_visibility = ["//visibility:public"])
+load("@rules_java//java:defs.bzl", "java_library")
 
 java_library(
     name = "graph",
     srcs = glob(["*.java"]),
-    deps = [
-        "//third_party:google_guava",
-    ],
+    visibility = ["//visibility:public"],
+    deps = ["//third_party:google_guava"],
 )
