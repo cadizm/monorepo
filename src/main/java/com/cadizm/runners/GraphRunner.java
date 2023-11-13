@@ -1,11 +1,11 @@
-package com.cadizm.runner;
+package com.cadizm.runners;
 
 import java.util.List;
 
 import com.cadizm.graph.DepthFirstSearch;
 import com.cadizm.graph.Node;
 
-public class Runner {
+public class GraphRunner {
 
   public static void dfs() {
     var aba = new Node<>("aba");
