@@ -1,0 +1,32 @@
+# https://ij.bazel.build/docs/project-views.html
+
+workspace_type: java
+
+java_language_level: 17
+
+directories:
+  # Add the directories you want added as source here
+  # By default, we've added your entire workspace ('.')
+  src
+  test
+  third_party
+
+# Automatically includes all relevant targets under the 'directories' above
+derive_targets_from_directories: true
+
+targets:
+  # If source code isn't resolving, add additional targets that compile it here
+
+build_flags:
+    --nojava_header_compilation
+
+additional_languages:
+  # Uncomment any additional languages you want supported
+  # android
+  # dart
+  # kotlin
+  # python
+  # scala
+
+test_sources:
+  test/java/com/cadizm/*
