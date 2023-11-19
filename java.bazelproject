@@ -18,7 +18,7 @@ targets:
   # If source code isn't resolving, add additional targets that compile it here
 
 build_flags:
-    --nojava_header_compilation
+  --nojava_header_compilation
 
 additional_languages:
   # Uncomment any additional languages you want supported

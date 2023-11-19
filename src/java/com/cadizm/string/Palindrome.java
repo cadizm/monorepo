@@ -28,7 +28,7 @@ public class Palindrome {
     Preconditions.checkArgument(s != null);
 
     // Find existing palindrome in string: Note that a single character is
-    //considered a palindrome, so for non-empty strings, we are guaranteed
+    // considered a palindrome, so for non-empty strings, we are guaranteed
     // to find a palindrome
     for (int i = 0; i < s.length(); ++i) {
       char cur = s.charAt(i);  // character at current index
