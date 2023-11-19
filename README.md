@@ -1,6 +1,29 @@
 # `cadizm` monorepo
 
+# Usage
+
+## Query targets
+
+```shell
+$ bazel query //...
+```
+
+## Build and test targets
+
+```shell
+$ bazel build //...
+$ bazel test //...
+```
+
+## Run a target
+
+```shell
+$ bazel run //src/python/cadizm:hello
+```
+
 # Setup
+
+IDE support is provided for [IntelliJ](https://www.jetbrains.com/idea/)
 
 ## IntelliJ
 
