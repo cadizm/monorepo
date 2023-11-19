@@ -7,8 +7,8 @@ java_language_level: 17
 directories:
   # Add the directories you want added as source here
   # By default, we've added your entire workspace ('.')
-  src
-  test
+  src/java
+  test/java
   third_party
 
 # Automatically includes all relevant targets under the 'directories' above
@@ -25,7 +25,6 @@ additional_languages:
   # android
   # dart
   # kotlin
-  # python
   # scala
 
 test_sources:
