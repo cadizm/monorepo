@@ -8,7 +8,7 @@ directories:
   # Add the directories you want added as source here
   # By default, we've added your entire workspace ('.')
   src/java
-  test/java
+  tests/java
   third_party
 
 # Automatically includes all relevant targets under the 'directories' above
@@ -28,4 +28,4 @@ additional_languages:
   # scala
 
 test_sources:
-  test/java/com/cadizm/*
+  tests/java/com/cadizm/*
