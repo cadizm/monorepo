@@ -5,12 +5,3 @@ py_library(
     srcs = ["__init__.py"],
     imports = [".."],
 )
-
-py_test(
-    name = "test_hello",
-    srcs = ["test_hello.py"],
-    deps = [
-        "//src/python/cadizm:__init__",
-        "//src/python/cadizm:hello",
-    ],
-)
