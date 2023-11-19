@@ -14,6 +14,7 @@ py_library(
     visibility = ["//visibility:public"],
     deps = [
         "//src/python/cadizm:__init__",
+        "//src/python/cadizm/aws/dynamodb",
         "//src/python/cadizm/foo:__init__",
         requirement("ipdb"),
     ],
