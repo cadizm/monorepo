@@ -1,5 +1,9 @@
 load("@rules_java//java:defs.bzl", "java_library")
 
+exports_files(
+    ["requirements_lock.txt"],
+)
+
 java_library(
     name = "google_guava",
     visibility = ["//visibility:public"],

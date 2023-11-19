@@ -93,7 +93,7 @@ load("@rules_python//python:pip.bzl", "pip_parse")
 
 pip_parse(
     name = "pypi_deps",
-    requirements_lock = "//src/python/cadizm:requirements_lock.txt",
+    requirements_lock = "//third_party:requirements_lock.txt",
     python_interpreter_target = interpreter,
 )
 
