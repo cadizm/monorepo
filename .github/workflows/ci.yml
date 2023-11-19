@@ -1,7 +1,15 @@
 name: CI
-run-name: ${{ github.workflow }} run ${{ github.run_attempt }} by ${{ github.actor }}
-on: [push]
+run-name: ${{ github.workflow }} run ${{ github.run_number }} by ${{ github.actor }}
+on: [push, pull_request]
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: psf/black@stable
+        with:
+          options: "--check --verbose"
+          src: "./src/python"
   unit-tests:
     runs-on: ubuntu-latest
     steps:
