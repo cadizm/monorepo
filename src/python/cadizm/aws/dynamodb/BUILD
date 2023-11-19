@@ -14,7 +14,7 @@ py_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//src/python/cadizm:__init__",
+        "//src/python/cadizm",
         requirement("boto3"),
     ],
 )
