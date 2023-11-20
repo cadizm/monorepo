@@ -1,6 +1,6 @@
 name: CI
 run-name: ${{ github.workflow }} run ${{ github.run_number }} by ${{ github.actor }}
-on: [push, pull_request]
+on: [push]
 jobs:
   lint:
     runs-on: ubuntu-latest
