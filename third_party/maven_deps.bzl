@@ -14,4 +14,5 @@ MAVEN_ARTIFACTS = [
     "org.hamcrest:hamcrest:2.2",
     "com.google.guava:guava:32.1.3-jre",
     "com.fasterxml.jackson.core:jackson-core:2.15.3",
+    "org.apache.commons:commons-lang3:3.13.0",
 ]

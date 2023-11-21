@@ -8,6 +8,7 @@ directories:
   # Add the directories you want added as source here
   # By default, we've added your entire workspace ('.')
   src/java
+  src/resources
   tests/java
   third_party
 

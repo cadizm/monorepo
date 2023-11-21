@@ -28,3 +28,11 @@ java_library(
         "@maven//:org_junit_jupiter_junit_jupiter_params",
     ],
 )
+
+java_library(
+    name = "apache_commons_lang3",
+    visibility = ["//visibility:public"],
+    exports = [
+        "@maven//:org_apache_commons_commons_lang3",
+    ],
+)
