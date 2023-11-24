@@ -1,4 +1,4 @@
-package com.cadizm.math;
+package com.cadizm.number;
 
 import org.junit.jupiter.api.Test;
 

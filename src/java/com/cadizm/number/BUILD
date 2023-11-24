@@ -1,7 +1,7 @@
 load("@rules_java//java:defs.bzl", "java_library")
 
 java_library(
-    name = "math",
+    name = "number",
     srcs = glob(["*.java"]),
     visibility = ["//visibility:public"],
     deps = ["//third_party:google_guava"],
