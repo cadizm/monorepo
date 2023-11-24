@@ -7,7 +7,7 @@ java_test_suite(
     test_suffixes = ["Test.java"],
     runtime_deps = JUNIT5_DEPS,
     deps = [
-        "//src/java/com/cadizm/math",
+        "//src/java/com/cadizm/number",
         "//third_party:hamcrest",
         "//third_party:junit_jupiter",
     ],
