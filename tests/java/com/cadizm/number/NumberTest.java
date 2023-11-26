@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -49,17 +48,13 @@ public class NumberTest {
 
   @Test
   public void testDeleteSingleDigitNegative() {
-    var numbers = Number.deleteSingleDigit(-1);
-    assertThat(numbers, hasSize(0));
-
-    numbers = Number.deleteSingleDigit(-17);
-    assertThat(numbers, hasSize(0));
+    assertThrows(IllegalArgumentException.class, () -> Number.deleteSingleDigit(-1));
+    assertThrows(IllegalArgumentException.class, () -> Number.deleteSingleDigit(-17));
   }
 
   @Test
   public void testDeleteSingleDigitZero() {
-    var numbers = Number.deleteSingleDigit(0);
-    assertThat(numbers, hasSize(0));
+    assertThrows(IllegalArgumentException.class, () -> Number.deleteSingleDigit(0));
   }
 
   @Test
@@ -98,5 +93,15 @@ public class NumberTest {
 
     assertThrows(ArithmeticException.class,
         () -> Number.getInt(List.of(2, 1, 4, 7, 4, 8, 3, 6, 4, 8)));
+  }
+
+  @Test
+  public void testReverseDigits() {
+    assertEquals(0, Number.reverseDigits(0));
+    assertEquals(1, Number.reverseDigits(10));
+    assertEquals(2, Number.reverseDigits(200));
+    assertEquals(222, Number.reverseDigits(222));
+    assertEquals(987654321, Number.reverseDigits(1234567890));
+    assertEquals(1345678902, Number.reverseDigits(2098765431));
   }
 }
