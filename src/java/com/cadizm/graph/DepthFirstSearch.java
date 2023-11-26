@@ -41,6 +41,10 @@ public class DepthFirstSearch {
     }
   }
 
+  /**
+   * Return map of: all paths of length n -> nodes traversed in path, in the graph
+   * rooted at `root`.
+   */
   public static <T> Map<Integer, List<List<String>>> allPaths(Node<T> root) {
     Preconditions.checkArgument(root != null);
 
