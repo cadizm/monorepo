@@ -1,5 +1,7 @@
 package com.cadizm.number;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -84,5 +86,17 @@ public class NumberTest {
 
     numbers = Number.deleteSingleDigit(123456);
     assertThat(numbers, containsInAnyOrder(23456, 13456, 12456, 12356, 12346, 12345));
+  }
+
+  @Test
+  public void testGetIntFromListDigits() {
+    assertEquals(0, Number.getInt(List.of(0)));
+    assertEquals(1, Number.getInt(List.of(1)));
+    assertEquals(1204, Number.getInt(List.of(1, 2, 0, 4)));
+    assertEquals(123, Number.getInt(List.of(0, 0, 1, 2, 3)));
+    assertEquals(831052501, Number.getInt(List.of(8, 3, 1, 0, 5, 2, 5, 0, 1)));
+
+    assertThrows(ArithmeticException.class,
+        () -> Number.getInt(List.of(2, 1, 4, 7, 4, 8, 3, 6, 4, 8)));
   }
 }

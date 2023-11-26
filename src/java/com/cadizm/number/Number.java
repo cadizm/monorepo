@@ -1,6 +1,7 @@
 package com.cadizm.number;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
@@ -27,14 +28,37 @@ public class Number {
 
     int res = 0;
 
-    for (int i = 0; i < chars.length; ++i) {
-      double temp = Math.pow(10, i) * getInt(chars[chars.length - i - 1]);
+    for (char c : chars) {
+      // increase result by power of 10 and add digit
+      res = res * 10 + getInt(c);
 
-      if (res + temp > Integer.MAX_VALUE) {
-        throw new ArithmeticException(String.format("Result too large: %s", res + temp));
+      if (res < 0) {
+        throw new ArithmeticException("Integer overflow: " + res);
       }
+    }
 
-      res += temp;
+    return res;
+  }
+
+  /**
+   * Return the base 10 integer value obtained by "concatenating" the list of
+   * non-negative integer `digits`.
+   *
+   * For example, given [1, 0, 2, 4], this method will return 1024.
+   */
+  public static int getInt(List<Integer> digits) {
+    Preconditions.checkArgument(digits != null);
+
+    int res = 0;
+
+    for (var digit : digits) {
+      Preconditions.checkArgument(digit >= 0);
+
+      res = res * 10 + digit;
+
+      if (res < 0) {
+        throw new ArithmeticException("Integer overflow: " + res);
+      }
     }
 
     return res;
