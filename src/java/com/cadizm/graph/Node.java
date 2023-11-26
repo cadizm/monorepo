@@ -3,6 +3,11 @@ package com.cadizm.graph;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Node class representing nodes in a graph.
+ *
+ * Nodes are identified using labeled strings and hold data of type T.
+ */
 public class Node<T> {
   private final String label;
   private final T data;

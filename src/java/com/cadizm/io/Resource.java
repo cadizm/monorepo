@@ -10,6 +10,12 @@ public class Resource {
 
   private static final ClassLoader classLoader = Resource.class.getClassLoader();
 
+  /**
+   * Return an InputStream for the resource located at `resourcePath`.
+   *
+   * Resources are rooted //src/resources, but can be read with shorter paths by
+   * using `resource_strip_prefix` when specifying the resource as a dependency.
+   */
   public static InputStream getResourceAsStream(String resourcePath) {
     // Use ClassLoader instead of class (i.e. Resource.class.getResourceAsStream)
     // to read resource in order to search for absolute path from root of classpath

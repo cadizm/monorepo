@@ -44,6 +44,9 @@ public class Palindrome {
     return "";
   }
 
+  /**
+   * Return true if `s` is a palindrome, false otherwise.
+   */
   public static boolean isPalindrome(String s) {
     Preconditions.checkArgument(s != null);
 
