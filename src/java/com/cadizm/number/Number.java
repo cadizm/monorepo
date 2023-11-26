@@ -77,13 +77,28 @@ public class Number {
    * Return the set of numbers resulting from the deletion of a single digit
    * from positive number n (i.e. greater than 0).
    */
-  static Set<Integer> deleteSingleDigit(int n) {
+  public static Set<Integer> deleteSingleDigit(int n) {
+    Preconditions.checkArgument(n > 0);
 
     Set<Integer> res = new HashSet<>();
 
     for (int d = 1; d <= n; d *= 10) {
       int number = (n % d) + (((n / d) / 10) * d);
       res.add(number);
+    }
+
+    return res;
+  }
+
+  public static int reverseDigits(int n) {
+    Preconditions.checkArgument(n >= 0);
+
+    int res = 0;
+
+    while (n > 0) {
+      int digit = n % 10;
+      res = res * 10 + digit;
+      n /= 10;
     }
 
     return res;
