@@ -123,6 +123,49 @@ public class Matrix<T> {
     return square;
   }
 
+  /**
+   * Return a nxn matrix with integers 1 to n * n in "spiral" order,
+   * beginning from the top-left of the matrix and proceeding clockwise.
+   */
+  public static Integer[][] spiral(int n) {
+    Preconditions.checkArgument(n > 0);
+
+    Integer[][] res = new Integer[n][n];
+
+    int left = 0;
+    int right = n - 1;
+    int top = 0;
+    int bottom = n - 1;
+
+    for (int i = 1; i <= n * n; ) {
+      // fill left-to-right
+      for (int col = left; col <= right; ++col) {
+        res[top][col] = i++;
+      }
+      top += 1;  // move top border down
+
+      // fill top-to-bottom
+      for (int row = top; row <= bottom; ++row) {
+        res[row][right] = i++;
+      }
+      right -= 1;  // move right border left
+
+      // fill right-to-left
+      for (int col = right; col >= left; --col) {
+        res[bottom][col] = i++;
+      }
+      bottom -= 1;  // move bottom border up
+
+      // bottom-to-top
+      for (int row = bottom; row >= top; --row) {
+        res[row][left] = i++;
+      }
+      left += 1;  // move left border right
+    }
+
+    return res;
+  }
+
   public String toString() {
     int padLen = maxElementLength() + 2;
     StringBuilder sb = new StringBuilder();

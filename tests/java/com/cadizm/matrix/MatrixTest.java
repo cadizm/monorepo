@@ -190,4 +190,50 @@ public class MatrixTest {
 
     assertEquals(expected, actual);
   }
+
+  @Test
+  public void testSpiral1x1() {
+    Matrix<Integer> matrix = new Matrix<>(Matrix.spiral(1));
+
+    assertEquals("""
+              1
+            """,
+        matrix.toString());
+  }
+
+  @Test
+  public void testSpiral2x2() {
+    Matrix<Integer> matrix = new Matrix<>(Matrix.spiral(2));
+
+    assertEquals("""
+              1  2
+              4  3
+            """,
+        matrix.toString());
+  }
+
+  @Test
+  public void testSpiral3x3() {
+    Matrix<Integer> matrix = new Matrix<>(Matrix.spiral(3));
+
+    assertEquals("""
+              1  2  3
+              8  9  4
+              7  6  5
+            """,
+        matrix.toString());
+  }
+
+  @Test
+  public void testSpiral4x4() {
+    Matrix<Integer> matrix = new Matrix<>(Matrix.spiral(4));
+
+    assertEquals("""
+               1   2   3   4
+              12  13  14   5
+              11  16  15   6
+              10   9   8   7
+            """,
+        matrix.toString());
+  }
 }
