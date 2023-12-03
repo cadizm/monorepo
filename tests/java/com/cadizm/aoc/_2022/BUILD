@@ -2,6 +2,7 @@ load("@contrib_rules_jvm//java:defs.bzl", "JUNIT5_DEPS", "java_test_suite")
 
 java_test_suite(
     name = "test",
+    size = "small",
     srcs = glob(["*.java"]),
     runner = "junit5",
     test_suffixes = ["Test.java"],
