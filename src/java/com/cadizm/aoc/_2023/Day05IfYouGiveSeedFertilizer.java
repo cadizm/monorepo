@@ -71,7 +71,7 @@ public class Day05IfYouGiveSeedFertilizer {
   }
 
   // Part 2 is the same as part 1, except that we now consider ranges of seeds
-  // TODO: figure out how to optimize
+  // TODO: Optimize to map ranges
   public long puzzle2() {
     Preconditions.checkArgument(seeds.size() % 2 == 0);
 
