@@ -8,11 +8,11 @@ public class Day04ScratchcardsTest {
 
   @Test
   public void testPuzzle1() {
-    assertEquals(21138, new Day04Scratchcards().puzzle1());
+    assertEquals(13, new Day04Scratchcards().puzzle1());
   }
 
   @Test
   public void testPuzzle2() {
-    assertEquals(7185540, new Day04Scratchcards().puzzle2());
+    assertEquals(30, new Day04Scratchcards().puzzle2());
   }
 }
