@@ -8,11 +8,11 @@ public class Day02CubeConundrumTest {
 
   @Test
   public void testPuzzle1() {
-    assertEquals(1931, new Day02CubeConundrum().puzzle1());
+    assertEquals(8, new Day02CubeConundrum().puzzle1());
   }
 
   @Test
   public void testPuzzle2() {
-    assertEquals(83105, new Day02CubeConundrum().puzzle2());
+    assertEquals(2286, new Day02CubeConundrum().puzzle2());
   }
 }
