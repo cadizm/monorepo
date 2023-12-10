@@ -7,6 +7,7 @@ java_library(
     resources = ["//src/resources/aoc/2023:input"],
     visibility = ["//visibility:public"],
     deps = [
+        "//src/java/com/cadizm/graph",
         "//src/java/com/cadizm/io",
         "//src/java/com/cadizm/math",
         "//src/java/com/cadizm/matrix",
