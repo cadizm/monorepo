@@ -1,16 +1,21 @@
 package com.cadizm.aoc._2023;
 
 import java.lang.reflect.Array;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.cadizm.graph.Node;
 import com.cadizm.io.Resource;
 import com.google.common.base.Preconditions;
+
+import static com.cadizm.graph.DepthFirstSearch.dfs;
 
 // https://adventofcode.com/2023/day/10
 public class Day10PipeMaze {
@@ -41,43 +46,164 @@ public class Day10PipeMaze {
     this.root = buildGraph();
   }
 
-  // read the puzzle input into a matrix
-  // scan the matrix and construct a graph by finding each tile's neighbors
-  // find the start tile and do a DFS, backtracking from dead ends
-  // starting from start, do a DFS
-  // terminate when reach node already seen
+  // Read the puzzle input into a matrix
+  // Scan the matrix and construct a graph by finding each tile's neighbors
+  // find the start tile and do a DFS, keeping track of the path traversed
+  // terminate after visiting every node along path
   // find length of loop and return its midpoint
+  // Note that either BFS or DFS could be used in this case because we have
+  // a predefined start node and every node has exactly 2 neighbors
   public int puzzle1() {
     List<Node<Tile>> path = dfs(root);
 
     return path.size() / 2;
   }
 
+  // Part 2 had me stumped on how to handle the "squeeze through pipes" use
+  // case. I gave up and looked on Reddit and saw that many others used an
+  // "expanded grid" approach. This is something I was not familiar with.
+  // See steps below:
+  //
+  // Perform dfs similar to part 1 in order to figure out which tiles are
+  // part of loop path
+  // Create a new grid, replacing all non-path tiles with "."
+  // Create a new expanded grid that maps each tile to an expanded 3x3 tile
+  // Note that this means that a 3x3 representation needs to be created for
+  // every tile symbol on the path (i.e. every pipe type)
+  // After expanding the grid, pick a non-path tile that is "outside" the loop
+  // such as (0, 0) and do a flood-fill to replace all adjacent "." symbols,
+  // making sure not to cross path boundaries
+  // Finally, scan expanded grid and count all 3x3 tiles that are filled with
+  // all "." symbols. These are the interior "."'s in the original graph
   public int puzzle2() {
-    return 0;
-  }
+    Set<Node<Tile>> path = new HashSet<>(dfs(root));
 
-  static List<Node<Tile>> dfs(Node<Tile> root) {
-    List<Node<Tile>> path = new ArrayList<>();
+    int rows = grid.length;
+    int cols = grid[0].length;
 
-    Set<Node<Tile>> visited = new HashSet<>();
-    Stack<Node<Tile>> stack = new Stack<>();
+    // Create a new grid initialized with `.`
+    String[][] buf = getEmptyGrid(rows, cols, ".");
 
-    stack.push(root);
-    while (!stack.isEmpty()) {
-      var node = stack.pop();
+    // Update new grid with path symbols
+    for (var node : path) {
+      Position pos = node.getData().position();
+      String symbol = node.getLabel();
+      buf[pos.row][pos.col] = symbol.equals("S") ? getRootSymbol() : symbol;
+    }
 
-      if (visited.contains(node)) {
+    // Create a new expanded grid that maps each tile to a 3x3 set of tiles
+    String[][] expanded = new String[3 * rows][3 * cols];
+
+    for (int row = 0; row < rows; ++row) {
+      for (int col = 0; col < cols; ++col) {
+        String symbol = buf[row][col];
+        String[][] mapping = expand(symbol);
+
+        for (int i = 0; i < mapping.length; ++i) {
+          for (int j = 0; j < mapping[i].length; ++j) {
+            expanded[3 * row + i][3 * col + j] = mapping[i][j];
+          }
+        }
+      }
+    }
+
+    // We assume that, (0, 0) is outside the path, so flood-fill from (0, 0)
+    Position position = new Position(0, 0);
+    String seed = expanded[position.row][position.col];
+
+    Deque<Position> queue = new ArrayDeque<>();
+    queue.add(position);
+
+    Set<Position> visited = new HashSet<>();
+
+    while (!queue.isEmpty()) {
+      position = queue.remove();
+
+      if (visited.contains(position)) {
         continue;
       }
 
-      path.add(node);
-      visited.add(node);
+      visited.add(position);
+      String symbol = expanded[position.row][position.col];
 
-      stack.addAll(node.getNeighbors());
+      if (!symbol.equals(seed)) {
+        continue;
+      }
+
+      expanded[position.row][position.col] = " ";
+
+      for (var direction : getDirections()) {
+        int dr = position.row + direction.position.row;
+        int dc = position.col + direction.position.col;
+
+        if (inBounds(dr, dc, expanded)) {
+          queue.add(new Position(dr, dc));
+        }
+      }
     }
 
-    return path;
+    int count = 0;
+    String needle = ".".repeat(9);
+
+    // Scan expanded grid and look for 3x3 tiles that are filled with `.`
+    for (int row = 0; row < rows; ++row) {
+      for (int col = 0; col < cols; ++col) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < 3; ++i) {
+          for (int j = 0; j < 3; ++j) {
+            sb.append(expanded[3 * row + i][3 * col + j]);
+          }
+        }
+
+        if (sb.toString().equals(needle)) {
+          count += 1;
+        }
+      }
+    }
+
+    return count;
+  }
+
+  String[][] expand(String symbol) {
+    return switch (symbol) {
+      case "." -> new String[][] {
+          new String[] {".", ".", "."},
+          new String[] {".", ".", "."},
+          new String[] {".", ".", "."},
+      };
+      case "-" -> new String[][] {
+          new String[] {".", ".", "."},
+          new String[] {"#", "#", "#"},
+          new String[] {".", ".", "."},
+      };
+      case "|" -> new String[][] {
+          new String[] {".", "#", "."},
+          new String[] {".", "#", "."},
+          new String[] {".", "#", "."},
+      };
+      case "F" -> new String[][] {
+          new String[] {".", ".", "."},
+          new String[] {".", "#", "#"},
+          new String[] {".", "#", "."},
+      };
+      case "J" -> new String[][] {
+          new String[] {".", "#", "."},
+          new String[] {"#", "#", "."},
+          new String[] {".", ".", "."},
+      };
+      case "7" -> new String[][] {
+          new String[] {".", ".", "."},
+          new String[] {"#", "#", "."},
+          new String[] {".", "#", "."},
+      };
+      case "L" -> new String[][] {
+          new String[] {".", "#", "."},
+          new String[] {".", "#", "#"},
+          new String[] {".", ".", "."},
+      };
+      default -> throw new RuntimeException();
+    };
   }
 
   /*
@@ -104,6 +230,56 @@ public class Day10PipeMaze {
     };
   }
 
+  String getRootSymbol() {
+    Set<Position> neighborPositions = root.getNeighbors()
+        .stream()
+        .map(Node::getData)
+        .map(Tile::position)
+        .collect(Collectors.toSet());
+
+    Tile rootTile = root.getData();
+    int row = rootTile.position.row;
+    int col = rootTile.position.col;
+
+    List<Connection> connections = new ArrayList<>();
+
+    for (var direction : getDirections()) {
+      int dr = row + direction.position.row;
+      int dc = col + direction.position.col;
+
+      Position pos = new Position(dr, dc);
+      if (neighborPositions.contains(pos)) {
+        connections.add(direction.connection);
+      }
+    }
+
+    Preconditions.checkArgument(connections.size() == 2);
+    String label = String.format("%s %s", connections.get(0), connections.get(1));
+
+    /*
+     * .....
+     * .F-7.
+     * .|.|.
+     * .L-J.
+     * .....
+     * NORTH SOUTH -> |
+     * EAST WEST   -> -
+     * NORTH EAST  -> L
+     * NORTH WEST  -> J
+     * SOUTH EAST  -> F
+     * SOUTH WEST  -> 7
+     */
+    return switch (label) {
+      case "NORTH SOUTH" -> "|";
+      case "EAST WEST" -> "-";
+      case "NORTH EAST" -> "L";
+      case "NORTH WEST" -> "J";
+      case "SOUTH EAST" -> "F";
+      case "SOUTH WEST" -> "7";
+      default -> throw new RuntimeException();
+    };
+  }
+
   /**
    * Return true if t1 connects to t2 using connections c1 and c2 respectively.
    */
@@ -111,8 +287,13 @@ public class Day10PipeMaze {
     return t1.connections.contains(c1) && t2.connections.contains(c2);
   }
 
-  static boolean areNeighbors(Node<Tile> a, Node<Tile> b) {
-    return a.getNeighbors().contains(b) && b.getNeighbors().contains(a);
+  List<Direction> getDirections() {
+    return List.of(
+        new Direction(new Position(-1, 0), Connection.NORTH), // up
+        new Direction(new Position(1, 0), Connection.SOUTH),  // down
+        new Direction(new Position(0, -1), Connection.WEST),  // left
+        new Direction(new Position(0, 1), Connection.EAST)    // right
+    );
   }
 
   /**
@@ -123,14 +304,7 @@ public class Day10PipeMaze {
 
     List<Node<Tile>> neighbors = new ArrayList<>();
 
-    List<Direction> directions = List.of(
-        new Direction(new Position(-1, 0), Connection.NORTH), // up
-        new Direction(new Position(1, 0), Connection.SOUTH),  // down
-        new Direction(new Position(0, -1), Connection.WEST),  // left
-        new Direction(new Position(0, 1), Connection.EAST)    // right
-    );
-
-    for (var direction : directions) {
+    for (var direction : getDirections()) {
       int i = row + direction.position.row;
       int j = col + direction.position.col;
 
@@ -159,7 +333,7 @@ public class Day10PipeMaze {
     return neighbors;
   }
 
-  boolean inBounds(int row, int col, Node<Tile>[][] grid) {
+  <T> boolean inBounds(int row, int col, T[][] grid) {
     return row >= 0 && row < grid.length &&
         col >= 0 && col < grid[row].length;
   }
@@ -213,6 +387,14 @@ public class Day10PipeMaze {
       }
     }
 
+    return grid;
+  }
+
+  String[][] getEmptyGrid(int rows, int cols, String seed) {
+    String[][] grid = (String[][])Array.newInstance(String.class, rows, cols);
+    for (int i = 0; i < rows; ++i) {
+      Arrays.fill(grid[i], seed);
+    }
     return grid;
   }
 }
