@@ -2,10 +2,11 @@ package com.cadizm.graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
-import java.util.function.Consumer;
 
 import com.google.common.base.Preconditions;
 
@@ -15,30 +16,28 @@ public class DepthFirstSearch {
    * Perform iterative depth-first traversal of graph rooted at `root`.
    *
    * @param root  Node from which to initiative DFS traversal
-   * @param visit Consumer functional interface applied to each node during traversal
    */
-  public static <T> void iterativeDfs(Node<T> root, Consumer<Node<T>> visit) {
-    Preconditions.checkArgument(root != null & visit != null);
+  public static <T> List<Node<T>> dfs(Node<T> root) {
+    Preconditions.checkArgument(root != null);
 
-    Map<Node<T>, Boolean> visited = new HashMap<>();
-
+    List<Node<T>> path = new ArrayList<>();
+    Set<Node<T>> visited = new HashSet<>();
     Stack<Node<T>> stack = new Stack<>();
-    stack.push(root);
 
+    stack.push(root);
     while (!stack.isEmpty()) {
       var node = stack.pop();
 
-      if (visited.containsKey(node)) {
+      if (visited.contains(node)) {
         continue;
       }
 
-      visit.accept(node);
-      visited.put(node, true);
-
-      for (var neighbor : node.getNeighbors()) {
-        stack.push(neighbor);
-      }
+      path.add(node);
+      visited.add(node);
+      stack.addAll(node.getNeighbors());
     }
+
+    return path;
   }
 
   /**
