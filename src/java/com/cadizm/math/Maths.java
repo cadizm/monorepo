@@ -50,4 +50,11 @@ public class Maths {
         .map(BigInteger::new)
         .reduce(BigInteger.ONE, Maths::lcm);
   }
+
+  /**
+   * Return the sum of absolute differences between 2 points on a Cartesian plane.
+   */
+  public static long manhattanDistance(long x1, long y1, long x2, long y2) {
+    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+  }
 }
