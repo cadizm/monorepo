@@ -18,11 +18,7 @@ public class Day13PointOfIncidence {
   record Tile(int row, int col, TileType type) {
     @Override
     public String toString() {
-      if (type == TileType.ASH) {
-        return ".";
-      }
-
-      return String.format("(%s, %s)", row, col);
+      return type == TileType.ASH ? "." : "#";
     }
   }
 
@@ -36,31 +32,75 @@ public class Day13PointOfIncidence {
     long sum = 0;
 
     for (var pattern : patterns) {
-      int col = verticalReflection(pattern);
-      int row = horizontalReflection(pattern);
+      int vertical = verticalReflection(pattern, List.of());
+      int horizontal = horizontalReflection(pattern, List.of());
 
-      Preconditions.checkArgument(!(col == -1 && row == -1));
+      Preconditions.checkArgument(!(vertical == -1 && horizontal == -1));
 
-      if (col != -1) {
-        sum += col;
+      if (vertical != -1) {
+        sum += vertical;
       }
 
-      if (row != -1) {
-        sum += 100L * row;
+      if (horizontal != -1) {
+        sum += 100L * horizontal;
       }
     }
 
     return sum;
   }
 
-  public long puzzle2(long factor) {
-    return 0;
+  public long puzzle2() {
+    long sum = 0;
+
+    patternLoop:
+    for (var pattern : patterns) {
+      int originalVertical = verticalReflection(pattern, List.of());
+      int originalHorizontal = horizontalReflection(pattern, List.of());
+
+      for (int row = 0; row < pattern.length; ++row) {
+        for (int col = 0; col < pattern[row].length; ++col) {
+          pattern[row][col] = flip(pattern[row][col]);
+
+          int vertical = verticalReflection(pattern, List.of(originalVertical));
+          int horizontal = horizontalReflection(pattern, List.of(originalHorizontal));
+
+          if (!(vertical == -1 && horizontal == -1) &&
+              (vertical != originalVertical || horizontal != originalHorizontal)) {
+
+            if (vertical != -1) {
+              sum += vertical;
+            }
+
+            if (horizontal != -1) {
+              sum += 100L * horizontal;
+            }
+
+            continue patternLoop;
+          }
+
+          pattern[row][col] = flip(pattern[row][col]);
+        }
+      }
+    }
+
+    return sum;
+  }
+
+  Tile flip(Tile tile) {
+    return new Tile(tile.row, tile.col, flip(tile.type));
+  }
+
+  TileType flip(TileType type) {
+    return switch (type) {
+      case ASH -> TileType.ROCK;
+      case ROCK -> TileType.ASH;
+    };
   }
 
   /**
    * Return the right position in a vertical reflection or -1 if one doesn't exist.
    */
-  int verticalReflection(Tile[][] pattern) {
+  int verticalReflection(Tile[][] pattern, List<Integer> skipIndices) {
     int cols = pattern[0].length;
 
     for (int col = 0; col < cols - 1; ++col) {
@@ -80,7 +120,7 @@ public class Day13PointOfIncidence {
           right += 1;
         }
 
-        if (flag) {
+        if (flag && (!skipIndices.contains(col + 1))) {
           return col + 1;
         }
       }
@@ -92,7 +132,7 @@ public class Day13PointOfIncidence {
   /**
    * Return the bottom position in a horizontal reflection or -1 if one doesn't exist.
    */
-  int horizontalReflection(Tile[][] pattern) {
+  int horizontalReflection(Tile[][] pattern, List<Integer> skipIndices) {
     int rows = pattern.length;
 
     for (int row = 0; row < rows - 1; ++row) {
@@ -112,7 +152,7 @@ public class Day13PointOfIncidence {
           bottom += 1;
         }
 
-        if (flag) {
+        if (flag && (!skipIndices.contains(row + 1))) {
           return row + 1;
         }
       }
