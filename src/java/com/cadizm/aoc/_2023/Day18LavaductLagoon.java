@@ -79,7 +79,68 @@ public class Day18LavaductLagoon {
   }
 
   public long puzzle2() {
-    return 0;
+    List<Instruction> translated = translate(instructions);
+
+    List<Point> boundaryPoints = new ArrayList<>();
+
+    // Using the list of instructions, giving us the start/end points of the
+    // edges in the polygon, "fill in" the points between start and end and
+    // add to our list of polygon boundary points.
+    Point point = new Point(0, 0);
+    for (var instruction : translated) {
+      Point end = point.move(instruction.direction, instruction.magnitude);
+
+      while (!point.equals(end)) {
+        boundaryPoints.add(point);
+        point = point.move(instruction.direction, 1);
+      }
+    }
+
+    // Use the Shoelace formula to calculate the polygon's area using its boundary
+    // points. Note that the points must be "oriented" correctly such that they
+    // are ordered positively (counter-clockwise) or negatively (clockwise) so
+    // that the boundary can be drawn by following the points in the given order.
+    long area = 0;
+    for (int i = 0; i < boundaryPoints.size(); ++i) {
+      Point a = boundaryPoints.get(i);
+      Point b = boundaryPoints.get((i + 1) % boundaryPoints.size());
+
+      area += (long)(a.row + b.row) * (a.col - b.col);
+    }
+    area = Math.abs(area / 2);
+
+    // Use Pick's theorem to calculate number of interior points:
+    //   Area = interior + (boundary / 2) - 1
+    //   interior = Area - (boundary / 2) + 1
+    long interiorPointsSize = area - (boundaryPoints.size() / 2) + 1;
+
+    return boundaryPoints.size() + interiorPointsSize;
+  }
+
+  List<Instruction> translate(List<Instruction> instructions) {
+    return instructions.stream()
+        .map(this::translate)
+        .toList();
+  }
+
+  // Each hexadecimal code is six hexadecimal digits long.
+  // The first five hexadecimal digits encode the distance
+  // The last hexadecimal digit encodes the direction to dig:
+  //   0 means R
+  //   1 means D
+  //   2 means L
+  //   3 means U
+  Instruction translate(Instruction instruction) {
+    int magnitude = Integer.parseInt(instruction.colorCode.substring(0, 5), 16);
+    Direction direction = switch (instruction.colorCode.charAt(5)) {
+      case '0' -> Direction.RIGHT;
+      case '1' -> Direction.DOWN;
+      case '2' -> Direction.LEFT;
+      case '3' -> Direction.UP;
+      default -> throw new RuntimeException();
+    };
+
+    return new Instruction(direction, magnitude, instruction.colorCode);
   }
 
   // Recenter to account for any movements left or above origin
@@ -188,8 +249,12 @@ public class Day18LavaductLagoon {
   }
 
   boolean inBounds(Point point, Object[][] grid) {
-    return point.row >= 0 && point.row < grid.length &&
-        point.col >= 0 && point.col < grid[point.row].length;
+    return inBounds(point, grid.length, grid[0].length);
+  }
+
+  boolean inBounds(Point point, int rows, int cols) {
+    return point.row >= 0 && point.row < rows &&
+        point.col >= 0 && point.col < cols;
   }
 
   List<Instruction> readInput(String path) {
@@ -207,7 +272,7 @@ public class Day18LavaductLagoon {
         default -> throw new RuntimeException();
       };
       int magnitude = Integer.parseInt(parts[1]);
-      String colorCode = parts[2].replaceAll("[\\(\\)]", "");
+      String colorCode = parts[2].replaceAll("[#\\(\\)]", "");
 
       instructions.add(new Instruction(direction, magnitude, colorCode));
     }
