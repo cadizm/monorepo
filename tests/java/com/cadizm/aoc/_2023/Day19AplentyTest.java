@@ -9,10 +9,10 @@ public class Day19AplentyTest {
   @Test
   public void testPuzzle1() {
     assertEquals(19114, new Day19Aplenty("day19.input").puzzle1());
-    //assertEquals(432788, new Day19Aplenty("secret/day19.input").puzzle1());
   }
 
   @Test
   public void testPuzzle2() {
+    assertEquals(167409079868000L, new Day19Aplenty("day19.input").puzzle2());
   }
 }
