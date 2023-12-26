@@ -10,6 +10,7 @@ jobs:
         with:
           options: "--check --verbose"
           src: "./src/python"
+          version: "23.11.0"
   unit-tests:
     runs-on: ubuntu-latest
     steps:

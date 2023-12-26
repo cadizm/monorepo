@@ -2,7 +2,6 @@ package com.cadizm.runners;
 
 import java.util.List;
 
-import com.cadizm.graph.DepthFirstSearch;
 import com.cadizm.graph.Node;
 
 public class GraphRunner {
@@ -20,7 +19,6 @@ public class GraphRunner {
 
     for (var node : nodes) {
       System.out.printf("Performing DFS rooted at %s\n", node);
-      DepthFirstSearch.iterativeDfs(node, System.out::println);
     }
   }
 
