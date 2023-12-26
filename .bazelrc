@@ -1,2 +1,2 @@
-build --java_language_version=17
-test --java_language_version=17
+build --java_language_version=21 --java_runtime_version=remotejdk_21
+test --java_language_version=21 --java_runtime_version=remotejdk_21
