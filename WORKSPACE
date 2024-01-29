@@ -59,6 +59,15 @@ load("@contrib_rules_jvm//:setup.bzl", "contrib_rules_jvm_setup")
 
 contrib_rules_jvm_setup()
 
+# https://github.com/salesforce/rules_spring
+http_archive(
+    name = "rules_spring",
+    sha256 = "7bb891ccb2f53ca188a769b3a3777be1c38348e18091afea05320f3003b3e886",
+    urls = [
+        "https://github.com/salesforce/rules_spring/releases/download/2.3.1/rules-spring-2.3.1.zip",
+    ],
+)
+
 #
 # Python Workspace
 #
