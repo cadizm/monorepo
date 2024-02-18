@@ -12,7 +12,7 @@ resource "aws_lightsail_instance" "mcadiz" {
   blueprint_id      = "ubuntu_22_04"
   bundle_id         = "nano_3_0"
   key_pair_name     = "us-east-1-key-pair-1"
-  user_data         = "sudo apt update --yes && sudo apt install --yes software-properties-common && sudo add-apt-repository --yes --update ppa:ansible/ansible && sudo apt install --yes nginx ansible && sudo systemctl restart nginx"
+  user_data         = "sudo apt update --yes && sudo apt install --yes software-properties-common && sudo add-apt-repository --yes --update ppa:ansible/ansible && sudo apt install --yes ansible"
 }
 
 resource "aws_lightsail_static_ip" "mcadiz" {
